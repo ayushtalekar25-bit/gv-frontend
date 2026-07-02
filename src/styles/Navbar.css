@@ -1,0 +1,57 @@
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,13,13,0.88);
+  border-bottom: 1px solid  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+}
+.navbar-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 62px;
+}
+
+.navbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.navbar-links { display: flex; align-items: center; gap: 2px; }
+.nav-link {
+  padding: 7px 14px; border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600;
+  color: #555; text-decoration: none; text-transform: uppercase;
+  letter-spacing: 0.5px; transition: all 0.2s;
+}
+.nav-link:hover { color: var(--green); background:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; }
+.nav-link.active { color: var(--green); background:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; }
+
+.navbar-actions { display: flex; align-items: center; gap: 8px; }
+.nav-icon-btn {
+  background: none; border: none; cursor: pointer;
+  color: #555; padding: 8px; border-radius: 8px; transition: all 0.2s;
+  display: flex; align-items: center;
+}
+.nav-icon-btn:hover { color: var(--green); background:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; }
+
+.nav-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #FFD400, #e6be00);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 900;
+  color: #000; text-decoration: none;
+  box-shadow: 0 0 12px  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+}
+
+.nav-menu-btn {
+  display: none; background: none; border: none;
+  color: #888; cursor: pointer; padding: 4px;
+}
+
+@media(max-width:768px){
+  .nav-menu-btn { display: flex; }
+  .navbar-links {
+    display: none; position: absolute; top: 62px; left: 0; right: 0;
+    flex-direction: column; gap: 3px; padding: 12px 16px;
+    background: rgba(13,13,13,0.98); border-bottom: 1px solid  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+  }
+  .navbar-links.open { display: flex; }
+  .nav-link { padding: 10px 14px; }
+  .navbar-inner { padding: 0 16px; }
+}

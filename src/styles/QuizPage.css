@@ -1,0 +1,48 @@
+.quiz-page { min-height: 100vh; background: var(--bg); padding: 20px; max-width: 1080px; margin: 0 auto; }
+
+.quiz-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+  background: rgba(255,255,255,0.03); border: 1px solid  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+  border-radius: 12px; backdrop-filter: blur(16px);
+}
+.quiz-logo {
+  width: 32px; height: 32px; border-radius: 6px; overflow: hidden;
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+}
+.quiz-logo img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: lighten; }
+
+.quiz-body   { display: grid; grid-template-columns: 1fr 230px; gap: 16px; align-items: start; }
+.quiz-main   { display: flex; flex-direction: column; gap: 12px; }
+.quiz-sidebar{ position: sticky; top: 16px; }
+
+.quiz-question-card {
+  padding: 26px;
+  background: rgba(255,255,255,0.03); border: 1px solid  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+  border-radius: 14px; animation: fadeInUp 0.3s ease;
+  backdrop-filter: blur(16px);
+}
+.quiz-option {
+  width: 100%; padding: 13px 16px; border-radius: 8px; cursor: pointer;
+  background:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; border: 1px solid  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+  color: #666; text-align: left;
+  font-family: 'Inter', sans-serif; font-size: 14px;
+  transition: all 0.18s; display: flex; align-items: center;
+}
+.quiz-option:hover { background:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; border-color:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; color: #ccc; }
+.quiz-option.selected {
+  background:  "rgba(255,212,0,$($args[0].Groups[1].Value))" ; border-color: var(--green);
+  color: var(--green); box-shadow: 0 0 12px  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+}
+.quiz-result-card {
+  padding: 36px; max-width: 460px; width: 100%;
+  background: rgba(255,255,255,0.03); border: 1px solid  "rgba(255,212,0,$($args[0].Groups[1].Value))" ;
+  border-radius: 16px; backdrop-filter: blur(20px);
+}
+
+@media(max-width:768px){
+  .quiz-body { grid-template-columns: 1fr; }
+  .quiz-sidebar { position: static; }
+  .quiz-question-card { padding: 18px; }
+}
