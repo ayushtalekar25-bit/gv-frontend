@@ -12,13 +12,39 @@ export default function AdminQuestions() {
   const [editId, setEditId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [toggling, setToggling] = useState(false);
 
   const load = (wid = weekId) => {
     api.get(`/quiz/admin/questions?weekId=${wid}`)
       .then(r => setQuestions(r.data.questions || [])).catch(() => {});
   };
 
-  useEffect(() => { load(); }, [weekId]);
+  // Load quiz open/close status
+  const loadStatus = () => {
+    api.get('/quiz/admin/quiz-status').then(r => setQuizOpen(r.data.isOpen)).catch(() => {});
+  };
+
+  const toggleQuiz = async () => {
+    setToggling(true);
+    try {
+      if (quizOpen) {
+        await api.post('/quiz/admin/close');
+        toast.success('Quiz closed — users can no longer attempt');
+        setQuizOpen(false);
+      } else {
+        await api.post('/quiz/admin/open', { weekId });
+        toast.success('Quiz opened — users can now attempt!');
+        setQuizOpen(true);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed');
+    } finally {
+      setToggling(false);
+    }
+  };
+
+  useEffect(() => { load(); loadStatus(); }, [weekId]);
 
   const handleOption = (i, val) => {
     const opts = [...form.options];
@@ -74,6 +100,35 @@ export default function AdminQuestions() {
 
   return (
     <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+
+      {/* ── Quiz Open/Close Toggle ── */}
+      <div className="glass" style={{ padding:'16px 20px', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12 }}>
+        <div>
+          <div style={{ fontFamily:'Rajdhani,sans-serif', fontWeight:700, fontSize:15, color:'#fff', marginBottom:2 }}>
+            Quiz Access Control
+          </div>
+          <div style={{ fontSize:12, color:'#555' }}>
+            {quizOpen
+              ? '✅ Quiz is currently OPEN — users can attempt it now'
+              : '🔒 Quiz is currently CLOSED — users cannot attempt it'}
+          </div>
+        </div>
+        <button
+          onClick={toggleQuiz}
+          disabled={toggling}
+          style={{
+            padding:'10px 24px', borderRadius:8, border:'none', cursor:'pointer',
+            fontFamily:'Rajdhani,sans-serif', fontWeight:700, fontSize:14,
+            textTransform:'uppercase', letterSpacing:'0.5px',
+            background: quizOpen ? '#FF3B30' : 'var(--green, #FFD400)',
+            color: quizOpen ? '#fff' : '#000',
+            boxShadow: quizOpen ? '0 0 14px rgba(255,59,48,0.4)' : '0 0 14px rgba(255,212,0,0.4)',
+            transition:'all 0.2s', opacity: toggling ? 0.6 : 1
+          }}>
+          {toggling ? 'Please wait...' : quizOpen ? '🔒 Close Quiz' : '🔓 Open Quiz for Users'}
+        </button>
+      </div>
+
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12 }}>
         <div className="section-title">Weekly Questions</div>
         <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap' }}>
